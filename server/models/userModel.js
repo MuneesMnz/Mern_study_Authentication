@@ -41,10 +41,10 @@ userSchema.statics.signup = async function (email, password) {
     throw Error("Email already in use");
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
+  const salt = await bcrypt.genSalt(10); // Generate a salt for hashing
+  const hash = await bcrypt.hash(password, salt); // Hash the password using the salt
 
-  const user = await this.create({ email, password: hash });
+  const user = await this.create({ email, password: hash }); // Store hashed password
 
   return user;
 };
@@ -62,13 +62,13 @@ userSchema.statics.login = async function (email, password) {
     throw Error("Incorrect Email");
   }
 
-  const matches = await bcrypt.compare(password, user.password);
+  const matches = await bcrypt.compare(password, user.password);  // Compare provided password with hashed one
 
   if (!matches) {
     throw Error("Incorrect password ");
   }
 
-  return user;
+  return user; // Return the authenticated user if login is successful
 };
 
 module.exports = mongoose.model("User", userSchema);
